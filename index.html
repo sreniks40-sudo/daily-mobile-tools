@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Mobile Tools</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  margin: 0;
+  padding: 20px;
+  color: #172033;
+}
+h1 { text-align: center; color: #2563eb; }
+.card {
+  background: white;
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
+input, textarea, button {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 16px;
+}
+button {
+  background: #2563eb;
+  color: white;
+  border: 0;
+}
+#result { font-weight: bold; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>Daily Mobile Tools</h1>
+<p style="text-align:center">Useful tools for your mobile</p>
+
+<div class="card">
+<h2>Calculator</h2>
+<input id="num1" type="number" placeholder="First number">
+<input id="num2" type="number" placeholder="Second number">
+<button onclick="calculate('+')">Add (+)</button>
+<button onclick="calculate('-')">Subtract (-)</button>
+<button onclick="calculate('*')">Multiply (×)</button>
+<button onclick="calculate('/')">Divide (÷)</button>
+<p id="result">Result will appear here</p>
+</div>
+
+<div class="card">
+<h2>Word Counter</h2>
+<textarea id="words" rows="4" placeholder="Type or paste your text here" oninput="countWords()"></textarea>
+<p id="count">Words: 0 | Characters: 0</p>
+</div>
+
+<div class="card">
+<h2>My Notes</h2>
+<textarea id="note" rows="5" placeholder="Write your note here"></textarea>
+<button onclick="saveNote()">Save Note</button>
+<p id="saved"></p>
+</div>
+
+<script>
+function calculate(op) {
+  const a = document.getElementById('num1').value;
+  const b = document.getElementById('num2').value;
+  const out = document.getElementById('result');
+  if (a === '' || b === '') {
+    out.textContent = 'Enter both numbers first.';
+    return;
+  }
+  const x = Number(a), y = Number(b);
+  if (op === '/' && y === 0) {
+    out.textContent = 'Cannot divide by zero.';
+    return;
+  }
+  const r = op === '+' ? x + y :
+            op === '-' ? x - y :
+            op === '*' ? x * y : x / y;
+  out.textContent = 'Result: ' + r;
+}
+function countWords() {
+  const t = document.getElementById('words').value;
+  const trimmed = t.trim();
+  const n = trimmed ? trimmed.split(/\s+/).length : 0;
+  document.getElementById('count').textContent =
+    'Words: ' + n + ' | Characters: ' + t.length;
+}
+function saveNote() {
+  try {
+    localStorage.setItem('dailyMobileNote',
+      document.getElementById('note').value);
+    document.getElementById('saved').textContent = 'Note saved on this device!';
+  } catch (e) {
+    document.getElementById('saved').textContent = 'Could not save note.';
+  }
+}
+document.getElementById('note').value =
+  localStorage.getItem('dailyMobileNote') || '';
+</script>
+</body>
+</html>
